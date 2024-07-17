@@ -1,0 +1,33 @@
+_target_: src.models.mnist_vae_module.MNISTVAELitModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+
+encoder:
+  _target_: src.models.components.simple_dense_vae.SimpleEncoder
+  input_size: 784
+  lin1_size: 512
+  lin2_size: 256
+  lin3_size: 128
+  output_size: 2
+
+decoder:
+  _target_: src.models.components.simple_dense_vae.SimpleDecoder
+  input_size: 2
+  lin1_size: 128
+  lin2_size: 256
+  lin3_size: 512
+  output_shape: [1, 28, 28]
+
+# compile model for faster training with pytorch 2.0
+compile: false
